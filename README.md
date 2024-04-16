@@ -23,31 +23,31 @@ Here's the ERD for the dating app based on the described schema:
 
 ### Relationships:
 
-UserProfiles: Central entity with attributes like user ID, username, email, etc.
+**UserProfiles**: Central entity with attributes like user ID, username, email, etc.
 
-UserPreferences: One-to-One relationship with Users, stores preferences like age range, gender preference, etc. (Foreign Key: UserID references UserProfiles(UserID))
+**UserPreferences**: One-to-One relationship with Users, stores preferences like age range, gender preference, etc. (Foreign Key: UserID references UserProfiles(UserID))
 
-Matches: Many-to-Many relationship between Users, stores information about matched users (user IDs, status, timestamp). (Foreign Keys: UserID1 and UserID2 both reference UserProfiles(UserID))
+**Matches**: Many-to-Many relationship between Users, stores information about matched users (user IDs, status, timestamp). (Foreign Keys: UserID1 and UserID2 both reference UserProfiles(UserID))
 
-Messages: Many-to-Many relationship between Users, stores message content, sender/receiver IDs, timestamps, and read status. (Foreign Keys: SenderID and ReceiverID both reference UserProfiles(UserID))
+**Messages**: Many-to-Many relationship between Users, stores message content, sender/receiver IDs, timestamps, and read status. (Foreign Keys: SenderID and ReceiverID both reference UserProfiles(UserID))
 
-Likes: One-to-Many relationship with Users, stores like/dislike information (user ID, liked user ID, status, timestamp). (Foreign Keys: LikerID and LikedUserID both reference UserProfiles(UserID))
+**Likes**: One-to-Many relationship with Users, stores like/dislike information (user ID, liked user ID, status, timestamp). (Foreign Keys: LikerID and LikedUserID both reference UserProfiles(UserID))
 
-Reports (Optional): One-to-Many or Many-to-Many relationships with Users and Messages (depending on implementation), stores reporting details. (Foreign Keys: ReporterID references UserProfiles(UserID), ReportedMessageID references Messages(MessageID) - optional)
+**Reports (Optional)**: One-to-Many or Many-to-Many relationships with Users and Messages (depending on implementation), stores reporting details. (Foreign Keys: ReporterID references UserProfiles(UserID), ReportedMessageID references Messages(MessageID) - optional)
 
 ### Cardinalities:
 
-UserProfiles: Many (can have many relationships)
+**UserProfiles**: Many (can have many relationships)
 
-UserPreferences: One (one set of preferences per user)
+**UserPreferences**: One (one set of preferences per user)
 
-Matches: Many (a user can have many matches)
+**Matches**: Many (a user can have many matches)
 
-Messages: Many (a user can send and receive many messages)
+**Messages**: Many (a user can send and receive many messages)
 
-Likes: Many (a user can like/dislike many profiles)
+**Likes**: Many (a user can like/dislike many profiles)
 
-Reports (Optional): Many (a user can submit many reports, a message/user can be reported by many users)
+**Reports (Optional)**: Many (a user can submit many reports, a message/user can be reported by many users)
 
 ### Attributes:
 
