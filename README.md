@@ -1,8 +1,11 @@
 # Dating App Database Schema Design
-Database schema design for a dating application is presented below. 
+Database schema design for a dating application using both **SQL** and **NoSQL** databases is presented below.
+
 The app aims to connect users based on their preferences, interests, location, and other relevant criteria.
 The database design is built to efficiently store user profiles, match data, messaging history, and
 application settings.
+
+## SQL Approach
 
 ## Entity - Relationship Diagram (ERD)
 <p align="center">
@@ -52,6 +55,86 @@ Here's the ERD for the dating app based on the described schema:
 ### Attributes:
 
 Each entity will have its specific attributes as defined in the database schema.
+
+## NoSQL Approach
+
+### Entity-Relationship Model (NoSQL Approach)
+
+In NoSQL databases like DynamoDB, we typically denormalize data to optimize for query performance and scalability. We'll design each table to suit specific access patterns and query requirements.
+
+### Entities:
+
+1. User Profiles
+2. User Preferences
+3. Matches
+4. Messages
+5. Likes/Dislikes
+6. Reporting/Moderation
+
+### DynamoDB Table Design:
+
+1. User Profiles Table:
+   - Partition Key: UserID (String)
+   - Attributes:
+     - Username (String)
+     - Email (String)
+     - PasswordHash (String) (Hashed securely using a strong algorithm)
+     - Gender (String)
+     - DateOfBirth (String or Number)
+     - Location (Map): {Latitude: Number, Longitude: Number} (Geo point data type for location)
+     - Bio (String)
+     - ProfilePictureURL (String)
+   - Secondary Indexes: None
+   
+2. User Preferences Table:
+   - Partition Key: UserID (String)
+   - Attributes:
+     - PreferredMinAge (Number)
+     - PreferredMaxAge (Number)
+     - PreferredGenders (String Set)
+     - DistanceRadius (Number)
+     - NotificationSettings (Boolean)
+   - Secondary Indexes: None
+
+3. Matches Table:
+   - Partition Key: MatchID (String or Number)
+   - Attributes:
+     - UserID1 (String)
+     - UserID2 (String)
+     - MatchStatus (String) - "pending", "accepted", or "declined"
+     - MatchDateTime (String or Number)
+   - Secondary Indexes: None
+
+4. Messages Table:
+   - Partition Key: ConversationID (String)
+   - Sort Key: Timestamp (String or Number)
+   - Attributes:
+     - SenderID (String) - References User Profiles table
+     - ReceiverID (String) - References User Profiles table
+     - MessageContent (String)
+     - ReadStatus (Boolean)
+     - Attachments (String Set)
+   - Secondary Indexes: None
+
+5. Likes/Dislikes Table:
+   - Partition Key: UserID (String)
+   - Sort Key: LikedUserID (String) - Ensures uniqueness for a like/dislike on a profile
+   - Attributes:
+     - LikeStatus (String) - "like" or "dislike"
+     - Timestamp (String or Number)
+   - Secondary Indexes: None
+
+6. Reporting/Moderation Table:
+   - Partition Key: ReportID (String or Number) - Unique identifier for the report
+   - Attributes:
+     - ReporterID (String) - References User Profiles table
+     - ReportedUserID (String) - References User Profiles table
+     - ReportedMessageID (String) - References Messages table
+     - ReportReason (String)
+     - ModerationAction (String) - "pending", "warning", or "suspended"
+     - Timestamp (String or Number)
+   - Secondary Indexes: None
+
 
 * NOTE: [For documentation and rationale behind the design, refer this link](https://github.com/SahibSodhi/Dating-App/blob/main/Documentation.txt)
 

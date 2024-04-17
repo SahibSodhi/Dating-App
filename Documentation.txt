@@ -1,6 +1,8 @@
 Design Documentation
 
-This document outlines the database schema design for a dating application.
+This document outlines the database schema design for a dating application using SQL Approach and NoSQL Approach.
+
+SQL Approach
 
 1. User Profiles
 Table: UserProfiles
@@ -143,3 +145,106 @@ Security Considerations
 * Regular security audits and penetration testing are recommended to identify and address vulnerabilities.
 
 With this design, the database can efficiently handle user profiles, preferences, matches, messages, likes/dislikes, and reporting/moderation functionalities for the dating app.
+
+
+NoSQL Approach
+
+Schema Design
+
+1. User Profiles Table:
+   - Partition Key: UserID (String)
+   - Attributes:
+     - Username (String)
+     - Email (String)
+     - PasswordHash (String)
+     - Gender (String)
+     - DateOfBirth (String or Number)
+     - Location (Map): {Latitude: Number, Longitude: Number}
+     - Bio (String)
+     - ProfilePictureURL (String)
+   - Secondary Indexes: None
+   
+2. User Preferences Table:
+   - Partition Key: UserID (String)
+   - Attributes:
+     - PreferredMinAge (Number)
+     - PreferredMaxAge (Number)
+     - PreferredGenders (String Set)
+     - DistanceRadius (Number)
+     - NotificationSettings (Boolean)
+   - Secondary Indexes: None
+
+3. Matches Table:
+   - Partition Key: MatchID (String or Number)
+   - Attributes:
+     - UserID1 (String)
+     - UserID2 (String)
+     - MatchStatus (String)
+     - MatchDateTime (String or Number)
+   - Secondary Indexes: None
+
+4. Messages Table:
+   - Partition Key: ConversationID (String)
+   - Sort Key: Timestamp (String or Number)
+   - Attributes:
+     - SenderID (String)
+     - ReceiverID (String)
+     - MessageContent (String)
+     - ReadStatus (Boolean)
+     - Attachments (String Set)
+   - Secondary Indexes: None
+
+5. Likes/Dislikes Table:
+   - Partition Key: UserID (String)
+   - Sort Key: LikedUserID (String)
+   - Attributes:
+     - LikeStatus (String)
+     - Timestamp (String or Number)
+   - Secondary Indexes: None
+
+6. Reporting/Moderation Table:
+   - Partition Key: ReportID (String or Number)
+   - Attributes:
+     - ReporterID (String)
+     - ReportedUserID (String)
+     - ReportedMessageID (String)
+     - ReportReason (String)
+     - ModerationAction (String)
+     - Timestamp (String or Number)
+   - Secondary Indexes: None
+
+
+Rationale and Documentation:
+
+In DynamoDB, we denormalize data to minimize the need for joins and optimize for read operations. Each table is designed to serve specific query patterns, and secondary indexes can be added later if needed for additional query flexibility.
+
+* Normalization: DynamoDB doesn't follow the normalization principles of SQL databases. Instead, data is structured based on access patterns and query requirements.
+
+* Efficiency: DynamoDB offers high performance and scalability out of the box, with automatic scaling and low-latency reads and writes. Designing tables based on query patterns helps optimize performance.
+
+* Scalability: DynamoDB scales horizontally to handle large amounts of data and high throughput. As the application grows, DynamoDB can handle increased load with minimal management overhead.
+
+* Future Enhancements: Additional features like real-time notifications, geospatial queries, or machine learning-based matchmaking algorithms can be implemented with DynamoDB streams, AWS Lambda, and other AWS services.
+
+Data Access:
+
+* DynamoDB uses document model for data, allowing flexible schema updates without altering the entire table structure.
+* Primary and composite keys are crucial for efficient data retrieval based on specific user IDs, message IDs, etc.
+* Secondary Indexes can be created on frequently queried attributes (e.g., gender_preference_ids) for faster lookups.
+
+Security Considerations:
+
+* Implement strong password hashing algorithms like bcrypt or scrypt.
+* Use IAM policies to control access to DynamoDB tables and attributes based on user roles. This ensures that only authorized users can access and modify specific data. For example, a basic user might only have read access to their profile information, while moderators might have access to report data and take moderation actions.
+* Encrypt sensitive data at rest and in transit using AWS Key Management Service (KMS) to further protect user information.
+* Regularly monitor and audit your DynamoDB tables for any suspicious activity.
+
+
+Benefits of NoSQL for Dating App:
+
+* Scalability: NoSQL databases like DynamoDB can easily scale horizontally to handle increasing user base and data volume.
+* Performance: DynamoDB offers fast data access due to its distributed architecture and focus on specific use cases like key-value retrieval.
+* Flexibility: The schema-less nature of DynamoDB allows for flexible data modeling and easier adaptation to evolving app features.
+
+Overall, DynamoDB provides a flexible and scalable foundation for building the database schema of dating app, catering to the requirements of modern, high-traffic applications.
+Utilizing DynamoDB's features like primary/composite keys, secondary indexes, and access control mechanisms allows for efficient data management and retrieval while prioritizing security through strong password hashing, IAM policies, and data encryption. By leveraging the scalability and performance benefits of NoSQL, this approach can support dating app with a robust and secure data foundation.
