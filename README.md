@@ -73,7 +73,7 @@ In NoSQL databases like DynamoDB, we typically denormalize data to optimize for 
 
 ### DynamoDB Table Design:
 
-1. User Profiles Table:
+**1. User Profiles Table**:
    - Partition Key: UserID (String)
    - Attributes:
      - Username (String)
@@ -86,7 +86,7 @@ In NoSQL databases like DynamoDB, we typically denormalize data to optimize for 
      - ProfilePictureURL (String)
    - Secondary Indexes: None
    
-2. User Preferences Table:
+**2. User Preferences Table**:
    - Partition Key: UserID (String)
    - Attributes:
      - PreferredMinAge (Number)
@@ -96,7 +96,7 @@ In NoSQL databases like DynamoDB, we typically denormalize data to optimize for 
      - NotificationSettings (Boolean)
    - Secondary Indexes: None
 
-3. Matches Table:
+**3. Matches Table**:
    - Partition Key: MatchID (String or Number)
    - Attributes:
      - UserID1 (String)
@@ -105,7 +105,7 @@ In NoSQL databases like DynamoDB, we typically denormalize data to optimize for 
      - MatchDateTime (String or Number)
    - Secondary Indexes: None
 
-4. Messages Table:
+**4. Messages Table**:
    - Partition Key: ConversationID (String)
    - Sort Key: Timestamp (String or Number)
    - Attributes:
@@ -116,7 +116,7 @@ In NoSQL databases like DynamoDB, we typically denormalize data to optimize for 
      - Attachments (String Set)
    - Secondary Indexes: None
 
-5. Likes/Dislikes Table:
+**5. Likes/Dislikes Table**:
    - Partition Key: UserID (String)
    - Sort Key: LikedUserID (String) - Ensures uniqueness for a like/dislike on a profile
    - Attributes:
@@ -124,7 +124,7 @@ In NoSQL databases like DynamoDB, we typically denormalize data to optimize for 
      - Timestamp (String or Number)
    - Secondary Indexes: None
 
-6. Reporting/Moderation Table:
+**6. Reporting/Moderation Table**:
    - Partition Key: ReportID (String or Number) - Unique identifier for the report
    - Attributes:
      - ReporterID (String) - References User Profiles table
